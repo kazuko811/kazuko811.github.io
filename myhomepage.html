@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>かずこ | ピアニスト</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --gold-dark: #8b6914;
+    --cream: #faf7f2;
+    --dark: #1a1410;
+    --brown: #3d2b1f;
+    --text: #2c1f14;
+    --text-light: #6b5040;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Serif JP', serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER / HERO ── */
+  header {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #1a1008 0%, #2d1f0e 40%, #3d2b10 100%);
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,168,76,0.12) 0%, transparent 70%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* ピアノ鍵盤装飾 */
+  .keys-deco {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 3px;
+    opacity: 0.15;
+  }
+  .key {
+    width: 28px;
+    height: 120px;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+    position: relative;
+  }
+  .key.black {
+    width: 18px;
+    height: 75px;
+    background: #1a1008;
+    border: 1px solid #444;
+    margin: 0 -10px;
+    z-index: 1;
+    border-radius: 0 0 3px 3px;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeUp 1.2s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.4em;
+    color: var(--gold-light);
+    margin-bottom: 1.2rem;
+    opacity: 0.8;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-shadow: 0 2px 40px rgba(201,168,76,0.3);
+  }
+
+  .hero-name span {
+    display: block;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    margin-top: 0.5rem;
+    font-weight: 300;
+  }
+
+  .hero-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 2rem auto;
+  }
+
+  .hero-desc {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.2em;
+    line-height: 2;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    animation: bounce 2s infinite;
+  }
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(26,16,8,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 0.9rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+
+  nav a {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    letter-spacing: 0.25em;
+    transition: color 0.3s;
+    position: relative;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  nav a:hover { color: var(--gold); }
+  nav a:hover::after { transform: scaleX(1); }
+
+  /* ── SECTION BASE ── */
+  section {
+    padding: 5rem 1.5rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 200;
+    color: var(--brown);
+    margin-bottom: 2.5rem;
+    line-height: 1.4;
+  }
+
+  .gold-line {
+    width: 50px;
+    height: 2px;
+    background: var(--gold);
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-photo-wrap {
+    position: relative;
+  }
+  .about-photo-wrap::before {
+    content: '';
+    position: absolute;
+    top: -12px; left: -12px;
+    right: 12px; bottom: 12px;
+    border: 1px solid var(--gold-light);
+    border-radius: 2px;
+  }
+  .about-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #d4b896 0%, #b8956a 50%, #8b6914 100%);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-photo::after {
+    content: '🎹';
+    font-size: 4rem;
+    opacity: 0.4;
+  }
+
+  .about-text p {
+    font-size: 0.9rem;
+    line-height: 2.2;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+  }
+
+  /* ── YOUTUBE ── */
+  #youtube {
+    background: linear-gradient(135deg, #1a1008 0%, #2d1f0e 100%);
+    max-width: 100%;
+    padding: 5rem 1.5rem;
+    margin: 0;
+  }
+  #youtube > .inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  #youtube .section-title { color: var(--gold-light); }
+  #youtube .section-label { color: var(--gold); }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  .video-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .video-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(201,168,76,0.5);
+  }
+  .video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #2d1f0e, #3d2b10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: rgba(201,168,76,0.4);
+  }
+  .video-info {
+    padding: 0.9rem;
+  }
+  .video-title {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+    letter-spacing: 0.05em;
+  }
+  .video-sub {
+    font-size: 0.7rem;
+    color: var(--gold);
+    margin-top: 0.3rem;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .yt-btn {
+    display: inline-block;
+    margin-top: 2.5rem;
+    padding: 0.8rem 2.2rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    font-family: 'Noto Serif JP', serif;
+    transition: all 0.3s;
+  }
+  .yt-btn:hover {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  /* ── PROFILE ── */
+  #profile {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .profile-item {
+    border-top: 1px solid var(--gold-light);
+    padding-top: 1rem;
+  }
+
+  .profile-item dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-dark);
+    margin-bottom: 0.4rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  .profile-item dd {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* ── CONTACT / SNS ── */
+  #contact {
+    text-align: center;
+    background: var(--brown);
+    max-width: 100%;
+    padding: 5rem 1.5rem;
+    margin: 0;
+  }
+  #contact .section-title { color: var(--gold-light); }
+  #contact .section-label { color: var(--gold); }
+  #contact .gold-line { margin: 0 auto 2.5rem; }
+
+  .sns-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .sns-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    transition: color 0.3s;
+    padding: 1.2rem 1.8rem;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 2px;
+    min-width: 130px;
+  }
+  .sns-link:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+  .sns-icon { font-size: 1.8rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    text-align: center;
+    padding: 1.8rem;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.15em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    #about {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .about-photo-wrap { max-width: 260px; margin: 0 auto; }
+    .profile-grid { grid-template-columns: 1fr; }
+    nav { gap: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header>
+  <div class="hero-inner">
+    <p class="hero-subtitle">Pianist &amp; Piano Teacher</p>
+    <h1 class="hero-name">
+      かずこ
+      <span>Kazuko</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      ピアノの音に、こころを乗せて。<br>
+      ミュージカル・クラシックのピアノ演奏をお届けします。
+    </p>
+  </div>
+  <div class="scroll-hint">SCROLL</div>
+  <!-- ピアノ鍵盤装飾 -->
+  <div class="keys-deco">
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div><div class="key black"></div>
+    <div class="key"></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#about">プロフィール</a>
+  <a href="#youtube">YouTube</a>
+  <a href="#profile">経歴</a>
+  <a href="#contact">SNS・お問い合わせ</a>
+</nav>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-photo-wrap">
+    <div class="about-photo"></div>
+  </div>
+  <div class="about-text">
+    <span class="section-label">About</span>
+    <h2 class="section-title">ピアノと<br>ともに生きる</h2>
+    <div class="gold-line"></div>
+    <p>
+      はじめまして、かずこです。
+      幼い頃からピアノを愛し、音楽の持つ力を信じています。
+    </p>
+    <p>
+      ミュージカルナンバーからクラシックまで、
+      心に響く演奏をYouTubeで発信しています。
+      ピアノが生み出す豊かな世界を、あなたと一緒に楽しみたいと思っています。
+    </p>
+    <p>
+      ピアノ教室も主宰しており、
+      初心者の方から経験者の方まで丁寧にレッスンしています。
+    </p>
+  </div>
+</section>
+
+<!-- YOUTUBE -->
+<div id="youtube">
+  <div class="inner">
+    <span class="section-label">YouTube</span>
+    <h2 class="section-title">かずこさんのピアノ便り</h2>
+    <div class="gold-line"></div>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-thumb">♪</div>
+        <div class="video-info">
+          <p class="video-title">SOMEDAY</p>
+          <p class="video-sub">ピアノ演奏</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">♪</div>
+        <div class="video-info">
+          <p class="video-title">Notre-Dame de Paris</p>
+          <p class="video-sub">ピアノ演奏</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">♪</div>
+        <div class="video-info">
+          <p class="video-title">最新動画</p>
+          <p class="video-sub">ピアノ演奏</p>
+        </div>
+      </div>
+    </div>
+    <a href="https://www.youtube.com/@lucy811" target="_blank" class="yt-btn">
+      チャンネルを見る →
+    </a>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<section id="profile">
+  <span class="section-label">Profile</span>
+  <h2 class="section-title">経歴・活動</h2>
+  <div class="gold-line"></div>
+  <dl class="profile-grid">
+    <div class="profile-item">
+      <dt>活動拠点</dt>
+      <dd>（ご記入ください）</dd>
+    </div>
+    <div class="profile-item">
+      <dt>ピアノ歴</dt>
+      <dd>（ご記入ください）</dd>
+    </div>
+    <div class="profile-item">
+      <dt>得意ジャンル</dt>
+      <dd>ミュージカル・クラシック</dd>
+    </div>
+    <div class="profile-item">
+      <dt>ピアノ教室</dt>
+      <dd>個人レッスン・（詳細をご記入ください）</dd>
+    </div>
+    <div class="profile-item">
+      <dt>YouTube</dt>
+      <dd>かずこさんのピアノ便り<br>@lucy811</dd>
+    </div>
+    <div class="profile-item">
+      <dt>Instagram</dt>
+      <dd>@uchakouchako</dd>
+    </div>
+  </dl>
+</section>
+
+<!-- CONTACT -->
+<div id="contact">
+  <span class="section-label">Contact &amp; SNS</span>
+  <h2 class="section-title">つながりましょう</h2>
+  <div class="gold-line"></div>
+  <div class="sns-links">
+    <a href="https://www.youtube.com/@lucy811" target="_blank" class="sns-link">
+      <span class="sns-icon">▶</span>
+      YouTube
+    </a>
+    <a href="https://www.instagram.com/uchakouchako/" target="_blank" class="sns-link">
+      <span class="sns-icon">📷</span>
+      Instagram
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  &copy; 2025 Kazuko. All rights reserved.
+</footer>
+
+</body>
+</html>
